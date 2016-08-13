@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {AuthService} from './auth/auth.service';
 import {ErrorComponent} from './errors/error.component';
@@ -11,21 +11,23 @@ import {User} from './auth/user';
     templateUrl: 'app.component.html',
     directives: [ROUTER_DIRECTIVES, ErrorComponent]
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
     constructor(
         private _authService: AuthService,
         private _errorService: ErrorService
     ) { }
-    @Input() user: User;
+    user: User = null;
 
-    ngOnInit(){
-        this.user = this._authService.user ? this._authService.user : new User('','');
-    }
     isLoggedIn() {
         return this._authService.isLoggedIn(); 
     }
     isAdmin() {
         // console.log(this._authService.user);
         return this._authService.user ? this._authService.user.isAdmin : false;
+    }
+    ngOnInit(){
+        this._authService.hasSignedIn.subscribe(user => {
+            this.user = user;
+        })
     }
 }

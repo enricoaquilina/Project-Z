@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable,EventEmitter} from '@angular/core';
 import {User} from './user';
 import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
@@ -7,6 +7,7 @@ import {Observable} from 'rxjs/Rx';
 export class AuthService{
     constructor(private _http: Http){}
     user: User;
+    hasSignedIn = new EventEmitter<User>();
 
     addUser(user: User){
         const body = JSON.stringify(user);
@@ -27,14 +28,14 @@ export class AuthService{
         const body = JSON.stringify(user);
         const headers = new Headers({'Content-Type': 'application/json'})
         return this._http.post('http://localhost:3000/user/signin', body, {headers: headers})
-            .map(response => {
-                this.user = response.json();
-                return response.json();
-            })
+            .map(response => 
+                response.json()
+            )
             .catch(error => Observable.throw(error.json()));
     }
     logout(){
         this.user = null;
+        this.hasSignedIn.emit(this.user);
         localStorage.clear();
     }
     isLoggedIn(){
@@ -42,6 +43,9 @@ export class AuthService{
     }
     isAdmin(){
         return this.user? this.user.isAdmin: false;
+    }
+    updateLoggedUser(user: User){;
+        this.hasSignedIn.emit(user);
     }
     isOwner(userId: string){
         return localStorage.getItem('userId') == userId;

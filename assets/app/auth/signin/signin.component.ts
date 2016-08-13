@@ -14,7 +14,6 @@ import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from '@angular/forms';
     directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES]
 })
 
-
 export class SigninComponent implements OnInit{
     myForm: ControlGroup;
 
@@ -34,6 +33,8 @@ export class SigninComponent implements OnInit{
    	                this._authService.user = data.obj;
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('userId', data.userId);
+                    this._authService.updateLoggedUser(user);
+
                     this._router.navigate(['/']);
                 },
                 error => this._errorService.handleError(error)
