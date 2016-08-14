@@ -24,7 +24,7 @@ export class UserComponent {
     followUser(){
 
     }
-    editUser(userToUpdate){
+    editUser(){
         this._userService.editUser(this.user);
     }
     deleteUser(){

@@ -9,11 +9,11 @@ import {AuthService} from '../auth.service';
 
 @Component({
     moduleId: module.id,
-    selector: 'user-update',
-    templateUrl: 'user-update.component.html',
+    selector: 'profile-component',
+    templateUrl: 'profile-update.component.html',
     directives: [FORM_DIRECTIVES,REACTIVE_FORM_DIRECTIVES]
 })
-export class UserUpdateComponent implements OnInit {
+export class ProfileUpdateComponent implements OnInit {
     constructor(
         private _userService: UserService,
         private _errorService: ErrorService,
@@ -28,13 +28,12 @@ export class UserUpdateComponent implements OnInit {
         this.user = null;
     }
     ngOnInit() {
-        this.user = this._userService.user;
+        this.user = this._authService.user;
         this.form = this._fbld.group({
             username: ['', Validators.required],
             email: ['', Validators.required],
             firstName: [''],
-            lastName: [''],
-            admin: ['']
+            lastName: ['']
         });
     };
     onSubmit(form: any) {
@@ -42,11 +41,11 @@ export class UserUpdateComponent implements OnInit {
         this.user.email = form.email;
         this.user.firstName = form.firstName;
         this.user.lastName = form.lastName;
-        this.user.isAdmin = form.admin;
-        
+
         this._userService.updateUser(this.user)
             .subscribe( data => {
-            this._router.navigate(['/users']);
+            this._authService.hasSignedIn.emit(data.obj);
+            this._router.navigate(['/']);
         }, function (error) { 
             return this._errorService.handleError(error); 
         });

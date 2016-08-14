@@ -121,6 +121,7 @@ router.get('/', function(req, res, next){
                             error: err
                         })
                     }
+                    // docs = docs.remove({ _id: doc._id })
                     res.status(200).json({
                         message: 'success',
                         obj: docs
@@ -131,29 +132,30 @@ router.get('/', function(req, res, next){
 })
 router.get('/:username', function(req, res, next){
     User.findOne({username: req.params.username}, 
-    function(err, doc){
-        if(err) {
-            return res.status(404).json({
-                title: 'An error occurred',
-                error: err
-            });
-        }
-        if(!doc) {
-            return res.status(404).json({
-                title: 'The user was not found!',
-                error: err
-            });
-        }
-        res.status(200).json({
-            message: 'User was found!',
-            obj: doc
+        function(err, doc) {
+            if(err) {
+                return res.status(404).json({
+                    title: 'An error occurred',
+                    error: err
+                });
+            }
+            if(!doc) {
+                return res.status(404).json({
+                    title: 'The user was not found!',
+                    error: err
+                });
+            }
+            res.status(200).json({
+                message: 'User was found!',
+                obj: doc
+            })
         })
-    })
 })
-router.patch('/:username', function(req, res, next){
+router.patch('/:id', function(req, res, next){
     var decoded = token.decode(req.query.token);
-    User.findOne({username: req.params.username}, function(err, doc){
-        if(err){
+
+        User.findById(req.params.id, function(err, doc){
+        if(err) {
             return res.status(404).json({
                 title: 'An error occurred',
                 error: err
@@ -175,7 +177,7 @@ router.patch('/:username', function(req, res, next){
         doc.email = req.body.email;
         doc.firstName = req.body.firstName;
         doc.lastName = req.body.lastName;
-        doc.isAdmin = req.body.isAdmin;
+        // doc.isAdmin = false;
 
         doc.save(function(err, doc){
             if(err){

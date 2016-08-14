@@ -9,6 +9,7 @@ import {HubUpdateComponent} from './hubs/hub-update.component';
 import {LogoutComponent} from './auth/logout/logout.component';
 import {UserListComponent} from './auth/admin/user-list.component';
 import {UserUpdateComponent} from './auth/admin/user-update.component';
+import {ProfileUpdateComponent} from './auth/profile/profile-update.component';
 
 const routes: RouterConfig = [
     {path: '', component: HubListComponent},
@@ -18,7 +19,8 @@ const routes: RouterConfig = [
     {path: 'signin', component: SigninComponent},
     {path: 'logout', component: LogoutComponent},
     {path: 'users', component: UserListComponent},
-    {path: 'user/update', component: UserUpdateComponent}
+    {path: 'user/update', component: UserUpdateComponent},
+    {path: 'profile', component: ProfileUpdateComponent}
 ];
 
 export const appRouterProviders = [

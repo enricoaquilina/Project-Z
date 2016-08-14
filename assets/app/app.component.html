@@ -13,6 +13,7 @@
             <li role="presentation"><a [routerLink]="['/hub/create']" *ngIf="isLoggedIn()">Create Hub</a></li>
             <li role="presentation"><a [routerLink]="['/signup']" *ngIf="!isLoggedIn()">Signup</a></li>
             <li role="presentation"><a [routerLink]="['/signin']" *ngIf="!isLoggedIn()">Signin</a></li>
+            <li role="presentation"><a [routerLink]="['/profile']" *ngIf="isLoggedIn()">Profile</a></li>
             <li role="presentation"><a [routerLink]="['/users']" *ngIf="isAdmin()">Users</a></li>
             <li role="presentation"><a [routerLink]="['/logout']" *ngIf="isLoggedIn()">Log out</a></li>
         </ul>

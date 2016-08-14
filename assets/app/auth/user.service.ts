@@ -12,24 +12,6 @@ export class UserService {
         private _http: Http,
         private _router: Router
     ) { }
-
-    // getUsers() {
-    //     return this._http.get('http://localhost:3000/user')
-    //         .map(function(response){
-    //             var data = response.json().obj;
-    //             var users = [];
-    //             for (var i=0;i<data.length;i++){
-    //                 var user = new User(
-    //                     data[i].username,'',data[i].email, 
-    //                     data[i].firstName, data[i].lastName);
-    //                 users.push(user);
-    //             }
-    //             return users;
-    //         })
-    //         .catch(function (error){
-    //             return Observable.throw(error.json());
-    //         })
-    // }
     getUsers() {
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
         return this._http.get('http://localhost:3000/user' + token)
@@ -40,7 +22,7 @@ export class UserService {
                 var user = new User(
                         data[i].username,'',data[i].email, 
                         data[i].firstName, data[i].lastName,
-                        data[i].isAdmin);
+                        data[i].isAdmin, data[i]._id);
                 objs.push(user);
             }
             return objs;
@@ -55,14 +37,17 @@ export class UserService {
             .catch(function (error) { return Observable.throw(error.json()); });
     }
     editUser(userToUpdate) {
-        this._router.navigate(['/user/update']);
         this.user = userToUpdate;
+        this._router.navigate(['/user/update']);
     }
     updateUser(user){
         var body = JSON.stringify(user);
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-        return this._http.patch('http://localhost:3000/user/' + user.username + token, body, { headers: headers })
+        var identifier ;
+        identifier = user._id ? user._id: user.identifier;
+        console.log(identifier);
+        return this._http.patch('http://localhost:3000/user/' + identifier + token, body, { headers: headers })
             .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable.throw(error.json()); });
     }

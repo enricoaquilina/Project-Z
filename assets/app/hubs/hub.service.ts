@@ -38,12 +38,13 @@ export class HubService {
         return this._http.get('http://localhost:3000/hub')
             .map(function (response) {
             var data = response.json().obj;
+            
             var objs = [];
             for (var i = 0; i < data.length; i++) {
                 var hub = new Hub(data[i].title, data[i].description, data[i].owner.username, data[i]._id, data[i].owner._id);
                 objs.push(hub);
             }
-            return objs;
+            return data;
         })
         .catch(function (error) { return Observable.throw(error.json()); });
     };
