@@ -1,15 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 import {AuthService} from './auth/auth.service';
-import {ErrorComponent} from './errors/error.component';
 import {ErrorService} from './errors/error.service';
 import {User} from './auth/user';
 
 @Component({
     moduleId: module.id,
     selector: 'my-app',
-    templateUrl: 'app.component.html',
-    directives: [ROUTER_DIRECTIVES, ErrorComponent]
+    templateUrl: 'app.component.html'
 })
 export class AppComponent implements OnInit {
     constructor(

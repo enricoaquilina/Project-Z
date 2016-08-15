@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {HubComponent} from './hub.component';
 import {Hub} from './hub';
 import {HubService} from './hub.service';
 import {ErrorService} from '../errors/error.service';
 import {AuthService} from '../auth/auth.service';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from '@angular/forms';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 
@@ -12,7 +10,6 @@ import {Router} from '@angular/router';
     moduleId: module.id,
     selector: 'hub-form',
     templateUrl: 'hub-form.component.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES]
 })
 export class HubFormComponent implements OnInit{
     form: FormGroup;

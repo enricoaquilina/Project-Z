@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from '@angular/forms';
 import {UserService} from '.././user.service';
 import {User} from '.././user';
 import {ErrorService} from '../../errors/error.service';
@@ -11,7 +10,6 @@ import {AuthService} from '../auth.service';
     moduleId: module.id,
     selector: 'user-update',
     templateUrl: 'user-update.component.html',
-    directives: [FORM_DIRECTIVES,REACTIVE_FORM_DIRECTIVES]
 })
 export class UserUpdateComponent implements OnInit {
     constructor(

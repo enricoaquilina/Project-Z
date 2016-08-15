@@ -1,17 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from '@angular/forms';
-import {UserService} from '.././user.service';
 import {User} from '.././user';
-import {ErrorService} from '../../errors/error.service';
 import {Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../auth.service';
+import {UserService} from '.././user.service';
+import {Component, OnInit} from '@angular/core';
+import {ErrorService} from '../../errors/error.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
     moduleId: module.id,
     selector: 'profile-component',
-    templateUrl: 'profile-update.component.html',
-    directives: [FORM_DIRECTIVES,REACTIVE_FORM_DIRECTIVES]
+    templateUrl: 'profile-update.component.html'
 })
 export class ProfileUpdateComponent implements OnInit {
     constructor(

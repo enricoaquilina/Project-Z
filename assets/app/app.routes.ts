@@ -1,4 +1,5 @@
-import {provideRouter, RouterConfig} from '@angular/router';
+// import {provideRouter, RouterConfig} from '@angular/router';
+import {Routes, RouterModule} from '@angular/router';
 
 // import {AppComponent} from './app.component';
 import {SignupComponent} from './auth/signup/signup.component';
@@ -11,7 +12,7 @@ import {UserListComponent} from './auth/admin/user-list.component';
 import {UserUpdateComponent} from './auth/admin/user-update.component';
 import {ProfileUpdateComponent} from './auth/profile/profile-update.component';
 
-const routes: RouterConfig = [
+const APP_ROUTES: Routes = [
     {path: '', component: HubListComponent},
     {path: 'hub/create', component: HubFormComponent},
     {path: 'hub/update', component: HubUpdateComponent},
@@ -23,6 +24,7 @@ const routes: RouterConfig = [
     {path: 'profile', component: ProfileUpdateComponent}
 ];
 
-export const appRouterProviders = [
-    provideRouter(routes)
-];
+export const ROUTING = RouterModule.forRoot(APP_ROUTES);
+// export const appRouterProviders = [
+//     provideRouter(routes)
+// ];

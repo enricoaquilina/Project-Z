@@ -10,7 +10,6 @@ import {Router} from '@angular/router';
     selector: 'hub-area',
     templateUrl: 'hub.component.html',
     styleUrls: ['hub.component.css'],
-
 })
 export class HubComponent{
     @Input() hub: Hub;

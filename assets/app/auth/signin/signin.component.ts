@@ -1,21 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, ControlGroup, Validators, Control} from '@angular/common';
 import {User} from '../user';
-import {AuthService} from '../auth.service';
 import {Router} from '@angular/router';
-import {ErrorService} from '../../errors/error.service';
+import {AuthService} from '../auth.service';
 import {AppValidators} from '../../validators';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {ErrorService} from '../../errors/error.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
     moduleId: module.id,
     selector: 'signin-component',
-    templateUrl: 'signin.component.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES]
+    templateUrl: 'signin.component.html'
 })
 
 export class SigninComponent implements OnInit{
-    myForm: ControlGroup;
+    myForm: FormGroup;
 
     constructor(
         private _fb: FormBuilder, 

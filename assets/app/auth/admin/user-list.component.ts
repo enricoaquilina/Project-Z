@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {UserComponent} from './user.component';
 import {User} from '../user';
 import {UserService} from '../user.service';
 import {ErrorService} from '../../errors/error.service';
@@ -10,7 +9,6 @@ import {AuthService} from '../auth.service';
     moduleId: module.id,
     selector: 'user-list',
     templateUrl: 'user-list.component.html',
-    directives: [UserComponent]
 })
 export class UserListComponent implements OnInit{
     users: User[];

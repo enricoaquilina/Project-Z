@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {HubComponent} from './hub.component';
 import {Hub} from './hub';
 import {HubService} from './hub.service';
 import {ErrorService} from '../errors/error.service';
@@ -7,8 +6,7 @@ import {ErrorService} from '../errors/error.service';
 @Component({
     moduleId: module.id,
     selector: 'hub-list',
-    templateUrl: 'hub-list.component.html',
-    directives: [HubComponent]
+    templateUrl: 'hub-list.component.html'
 })
 export class HubListComponent implements OnInit{
     hubs: Hub[];

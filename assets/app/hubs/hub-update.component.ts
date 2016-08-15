@@ -5,13 +5,11 @@ import {AuthService} from '../auth/auth.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Hub} from './hub';
 import {Router} from '@angular/router';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from '@angular/forms';
 
 @Component({
     moduleId: module.id,
     selector: 'hub-update',
-    templateUrl: 'hub-update.component.html',
-    directives: [FORM_DIRECTIVES,REACTIVE_FORM_DIRECTIVES]
+    templateUrl: 'hub-update.component.html'
 })
 
 export class HubUpdateComponent implements OnInit{
