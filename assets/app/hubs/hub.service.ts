@@ -44,7 +44,7 @@ export class HubService {
                 var hub = new Hub(data[i].title, data[i].description, data[i].owner.username, data[i]._id, data[i].owner._id);
                 objs.push(hub);
             }
-            return data;
+            return objs;
         })
         .catch(function (error) { return Observable.throw(error.json()); });
     };

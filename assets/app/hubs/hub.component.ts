@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import {Hub} from './hub';
 import {HubService} from './hub.service';
 import {AuthService} from '../auth/auth.service';
@@ -24,7 +24,6 @@ export class HubComponent{
 
     color = 'white';
     show = true;
-
     editHub(){
         this._hubService.editHub(this.hub);
     }
@@ -43,5 +42,8 @@ export class HubComponent{
     }
     isOwner(){
         return this._authService.isOwner(this.hub.ownerId);
+    }
+    isLoggedIn(){
+        return this._authService.isLoggedIn();
     }
 }
