@@ -5,7 +5,8 @@ var User = require('../models/user');
 var messageSchema = new Schema({
     content: {type: String, required: true},
     user: {type: Schema.Types.ObjectId, ref: 'User'},
-    creationDate: {type: String}
+    parentHub: {type: Schema.Types.ObjectId, ref: 'Hub'},
+    creationDate: {type: Date, default: Date.now}
 });
 
 messageSchema.post('remove', function(doc){

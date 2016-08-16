@@ -1,10 +1,9 @@
-// import {provideRouter, RouterConfig} from '@angular/router';
 import {Routes, RouterModule} from '@angular/router';
 
-// import {AppComponent} from './app.component';
 import {SignupComponent} from './auth/signup/signup.component';
 import {SigninComponent} from './auth/signin/signin.component';
 import {HubListComponent} from './hubs/hub-list.component';
+import {HubMainComponent} from './hubs/hub-main.component';
 import {HubFormComponent} from './hubs/hub-form.component';
 import {HubUpdateComponent} from './hubs/hub-update.component';
 import {LogoutComponent} from './auth/logout/logout.component';
@@ -16,6 +15,7 @@ const APP_ROUTES: Routes = [
     {path: '', component: HubListComponent},
     {path: 'hub/create', component: HubFormComponent},
     {path: 'hub/update', component: HubUpdateComponent},
+    {path: 'h', component: HubMainComponent},
     {path: 'signup', component: SignupComponent},
     {path: 'signin', component: SigninComponent},
     {path: 'logout', component: LogoutComponent},
@@ -25,6 +25,3 @@ const APP_ROUTES: Routes = [
 ];
 
 export const ROUTING = RouterModule.forRoot(APP_ROUTES);
-// export const appRouterProviders = [
-//     provideRouter(routes)
-// ];

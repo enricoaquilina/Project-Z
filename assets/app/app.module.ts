@@ -25,6 +25,7 @@ import {SignupComponent} from './auth/signup/signup.component';
 import {ErrorComponent} from './errors/error.component';
 import {HubFormComponent} from './hubs/hub-form.component';
 import {HubListComponent} from './hubs/hub-list.component';
+import {HubMainComponent} from './hubs/hub-main.component';
 import {HubUpdateComponent} from './hubs/hub-update.component';
 import {HubComponent} from './hubs/hub.component';
 
@@ -36,8 +37,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
         AppComponent, UserListComponent, UserUpdateComponent,
         UserComponent, LogoutComponent, ProfileUpdateComponent, 
         SigninComponent, SignupComponent, ErrorComponent,
-        HubFormComponent, HubListComponent, HubUpdateComponent,
-        HubComponent
+        HubFormComponent, HubListComponent, HubMainComponent,
+        HubUpdateComponent, HubComponent
         // FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES
     ],
     providers: [

@@ -12,6 +12,8 @@ export class HubService {
     ){}
     hubs: Hub[] = [];
     isEdit = new EventEmitter<Hub>();
+    hubViewEvt = new EventEmitter<Hub>();
+
     hub: Hub = null;
     
     addHub (hub) {

@@ -35,7 +35,9 @@ export class HubComponent{
             );
     }
     viewHub(){
-
+        this._router.navigateByUrl('/h');
+        this._hubService.hub = this.hub;
+        // this._hubService.hubViewEvt.emit(this.hub);
     }
     subscribeHub(){
 

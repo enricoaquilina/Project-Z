@@ -44,9 +44,7 @@ export class UserService {
         var body = JSON.stringify(user);
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-        var identifier ;
-        identifier = user._id ? user._id: user.identifier;
-        console.log(identifier);
+        var identifier = user._id ? user._id : user.identifier;
         return this._http.patch('http://localhost:3000/user/' + identifier + token, body, { headers: headers })
             .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable.throw(error.json()); });

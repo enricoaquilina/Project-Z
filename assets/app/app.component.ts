@@ -19,7 +19,6 @@ export class AppComponent implements OnInit {
         return this._authService.isLoggedIn(); 
     }
     isAdmin() {
-        console.log(this._authService.user);
         return this._authService.user ? this._authService.user.isAdmin : false;
     }
     ngOnInit(){
