@@ -68,9 +68,9 @@ router.use('/', function(req, res, next){
     })
 })
 router.post('/', function(req, res, next){
-    // var decoded = token.decode(req.query.token);
+    var decoded = token.decode(req.query.token);
     User.findOne( { _id: req.body.userId }, 
-        function(err, doc){
+        function(err, doc) {
             if(err) {
                 return res.status(404).json({
                     title: 'An error occurred',
@@ -80,6 +80,12 @@ router.post('/', function(req, res, next){
             if(!doc) {
                 return res.status(404).json({
                     title: 'The user was not found!',
+                    error: err
+                });
+            }
+            if(doc._id != decoded.user._id) {
+                return res.status(401).json({
+                    title: 'Not authorized',
                     error: err
                 });
             }
@@ -112,8 +118,7 @@ router.get('/', function(req, res, next){
                     error: {message: 'You must be an administrator to view this page!'},
                 });
             }
-            User.find()
-                // .populate('owner', 'username email')
+            User.find({_id:{$ne: doc._id}})
                 .exec(function(err, docs){
                     if(err){
                         return res.status(404).json({
@@ -121,7 +126,6 @@ router.get('/', function(req, res, next){
                             error: err
                         })
                     }
-                    // docs = docs.remove({ _id: doc._id })
                     res.status(200).json({
                         message: 'success',
                         obj: docs

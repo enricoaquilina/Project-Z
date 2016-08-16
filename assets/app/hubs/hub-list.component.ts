@@ -22,7 +22,7 @@ export class HubListComponent implements OnInit{
                 data => {
                     
                     this.hubs = data;
-                    console.log(this.hubs);
+
                     // this._hubService.hubs = this.hubs;
                 },
                 error => this._errorService.handleError(error)

@@ -19,12 +19,22 @@ export class AppComponent implements OnInit {
         return this._authService.isLoggedIn(); 
     }
     isAdmin() {
-        // console.log(this._authService.user);
+        console.log(this._authService.user);
         return this._authService.user ? this._authService.user.isAdmin : false;
     }
     ngOnInit(){
         this._authService.hasSignedIn.subscribe(user => {
             this.user = user;
         })
+        if(!this.user){
+            this._authService.getUserDetails()
+                .subscribe(
+                    data => {
+                        this.user = data.obj
+                        this._authService.user = this.user;
+                    },
+                    error => this._errorService.handleError(error)
+                );
+        }
     }
 }

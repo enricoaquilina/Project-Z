@@ -38,13 +38,27 @@ export class AuthService{
         this.hasSignedIn.emit(this.user);
         localStorage.clear();
     }
+    getUserDetails(){
+        //get user details again after refresh using his id
+        var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+        var userId = localStorage.getItem('userId') ? localStorage.getItem('userId') : '';
+        var identifierObject = {
+            userId: userId
+        }
+        const body = JSON.stringify(identifierObject);
+        const headers = new Headers({'Content-Type': 'application/json'})
+
+        return this._http.post('http://localhost:3000/user' + token, body, {headers: headers})
+                   .map(response => response.json())
+                   .catch(error => Observable.throw(error.json()));    
+    }
     isLoggedIn(){
         return localStorage.getItem('token') !== null;
     }
     isAdmin(){
         return this.user? this.user.isAdmin: false;
     }
-    updateLoggedUser(user: User){;
+    updateLoggedUser(user: User){
         this.hasSignedIn.emit(user);
     }
     isOwner(userId: string){
