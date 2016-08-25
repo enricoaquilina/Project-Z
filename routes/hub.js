@@ -46,7 +46,6 @@ router.post('/', function(req, res, next){
             description: req.body.description,
             owner: doc
         });
-
         hub.save(function(err, result){
             if(err){
                 return res.status(404).json({
@@ -62,7 +61,35 @@ router.post('/', function(req, res, next){
             });
         })
     })
-    
+})
+router.post('/hubMessages', function(req, res, next){
+    console.log(req.body);
+    // HubMessage.find( { hubTitle: req.body }, 
+    //     function(err, docs) {
+    //         if(err) {
+    //             return res.status(404).json({
+    //                 title: 'An error occurred',
+    //                 error: err
+    //             });
+    //         }
+    //         if(!doc) {
+    //             return res.status(404).json({
+    //                 title: 'The messages were not found!',
+    //                 error: err
+    //             });
+    //         }
+    //         if(doc._id != decoded.user._id) {
+    //             return res.status(401).json({
+    //                 title: 'Not authorized',
+    //                 error: err
+    //             });
+    //         }
+    //         res.status(200).json({
+    //             message: 'Messages were found!',
+    //             obj: docs
+    //         })
+    //     }
+    // )
 })
 router.delete('/:id', function(req, res, next) {
     var decoded = token.decode(req.query.token);

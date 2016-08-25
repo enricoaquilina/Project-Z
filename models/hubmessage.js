@@ -9,11 +9,11 @@ var messageSchema = new Schema({
     creationDate: {type: Date, default: Date.now}
 });
 
-messageSchema.post('remove', function(doc){
-    User.findById(doc.user, function(err, usr){
-        // usr.messages.splice(usr.messages.indexOf(doc));
-        usr.messages.pull(doc);
-        usr.save();
-    })
-});
-module.exports = mongoose.model('Message', messageSchema);
+// messageSchema.post('remove', function(doc){
+//     User.findById(doc.user, function(err, usr){
+//         // usr.messages.splice(usr.messages.indexOf(doc));
+//         usr.messages.pull(doc);
+//         usr.save();
+//     })
+// });
+module.exports = mongoose.model('HubMessage', messageSchema);

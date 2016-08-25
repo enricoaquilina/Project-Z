@@ -4,7 +4,8 @@
     </div>
     <div class="panel-body">
         <!--{{hub.description}}-->
-        <textarea rows="20" cols="10"></textarea>
+        <hub-message *ngFor="let message of messages" [message]="message"></hub-message>
+        <textarea rows="20" cols="100"></textarea>
     </div>
     <footer class="panel-footer clearfix">
         <div class="author pull-left">

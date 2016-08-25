@@ -50,6 +50,17 @@ export class HubService {
         })
         .catch(function (error) { return Observable.throw(error.json()); });
     };
+    getHubMessages(hubTitle) {
+        const body = JSON.stringify(hubTitle);
+        const headers = new Headers({'Content-Type': 'application/json'});
+        var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+
+        return this._http.post('http://localhost:3000/hubMessages'+ token, body, {headers: headers})
+            .map(response => 
+                response.json()
+            )
+            .catch(error => Observable.throw(error.json()));
+    }
     editHub(hubToUpdate) {
         this._router.navigate(['/hub/update']);
         this.hub = hubToUpdate;

@@ -15,7 +15,7 @@ const APP_ROUTES: Routes = [
     {path: '', component: HubListComponent},
     {path: 'hub/create', component: HubFormComponent},
     {path: 'hub/update', component: HubUpdateComponent},
-    {path: 'h', component: HubMainComponent},
+    {path: 'h/:title', component: HubMainComponent},
     {path: 'signup', component: SignupComponent},
     {path: 'signin', component: SigninComponent},
     {path: 'logout', component: LogoutComponent},
