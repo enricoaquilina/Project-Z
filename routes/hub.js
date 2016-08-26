@@ -4,6 +4,7 @@ var token = require('jsonwebtoken');
 
 var Hub = require('../models/hub');
 var User = require('../models/user');
+var HubMessage = require('../models/hubmessage');
 
 router.get('/', function(req, res, next){
     Hub.find()
@@ -32,64 +33,78 @@ router.use('/', function(req, res, next){
         next();
     })
 })
-router.post('/', function(req, res, next){
+// router.post('/', function(req, res, next){
+//     var decoded = token.decode(req.query.token);
+//     User.findById(decoded.user._id, function(err, doc){
+//         if(err){
+//             return res.status(404).json({
+//                 title: 'An error occurred',
+//                 error: err
+//             });
+//         }
+//         var hub = new Hub({
+//             title: req.body.title,
+//             description: req.body.description,
+//             owner: doc
+//         });
+//         hub.save(function(err, result){
+//             if(err){
+//                 return res.status(404).json({
+//                     title: 'An error occurred',
+//                     error: err
+//                 });
+//             }
+//             doc.subscribedHubs.push(result);
+//             doc.save();
+//             res.status(201).json({
+//                 message: 'The hub has been saved',
+//                 obj: result
+//             });
+//         })
+//     })
+// })
+router.post('/message', function(req, res, next){
+    console.log(req.body);
+    console.log(req.query);
     var decoded = token.decode(req.query.token);
-    User.findById(decoded.user._id, function(err, doc){
+    console.log('here');
+    User.findOne({username: req.body.writer}, function(err, user){
         if(err){
             return res.status(404).json({
                 title: 'An error occurred',
                 error: err
             });
         }
-        var hub = new Hub({
-            title: req.body.title,
-            description: req.body.description,
-            owner: doc
-        });
-        hub.save(function(err, result){
-            if(err){
-                return res.status(404).json({
-                    title: 'An error occurred',
-                    error: err
-                });
-            }
-            doc.subscribedHubs.push(result);
-            doc.save();
-            res.status(201).json({
-                message: 'The hub has been saved',
-                obj: result
-            });
-        })
+        if(user) {
+            Hub.findOne({title: req.body.parentHub}, function(err, doc){
+                if(err){
+                    return res.status(404).json({
+                        title: 'An error occurred',
+                        error: err
+                    });
+                }
+                if(doc) {
+                    var hubMessage = new HubMessage({
+                        content: req.body.content,
+                        user: user,
+                        doc: doc
+                    })  
+                    hubMessage.save(function(err, result){
+                        if(err){
+                            return res.status(404).json({
+                                title: 'An error occurred',
+                                error: err
+                            });
+                        }
+                        res.status(201).json({
+                            message: 'The message has been saved',
+                            obj: result
+                        });
+                    })
+                }
+            })
+        }
     })
-})
-router.post('/hubMessages', function(req, res, next){
-    console.log(req.body);
-    // HubMessage.find( { hubTitle: req.body }, 
-    //     function(err, docs) {
-    //         if(err) {
-    //             return res.status(404).json({
-    //                 title: 'An error occurred',
-    //                 error: err
-    //             });
-    //         }
-    //         if(!doc) {
-    //             return res.status(404).json({
-    //                 title: 'The messages were not found!',
-    //                 error: err
-    //             });
-    //         }
-    //         if(doc._id != decoded.user._id) {
-    //             return res.status(401).json({
-    //                 title: 'Not authorized',
-    //                 error: err
-    //             });
-    //         }
-    //         res.status(200).json({
-    //             message: 'Messages were found!',
-    //             obj: docs
-    //         })
-    //     }
-    // )
 })
 router.delete('/:id', function(req, res, next) {
     var decoded = token.decode(req.query.token);

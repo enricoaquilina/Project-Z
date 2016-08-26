@@ -4,6 +4,7 @@ import {HubService} from './hub.service';
 import {HubMessage} from './hubmessage';
 import {ErrorService} from '../errors/error.service';
 import {AuthService} from '../auth/auth.service';
+import {AppValidators} from '../validators';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
@@ -17,6 +18,7 @@ export class HubMainComponent implements OnInit{
     // form: FormGroup;
     hubMessages: HubMessage[];
     private sub: Subscription;
+    form: FormGroup;
 
     constructor(
         private _hubService: HubService,
@@ -28,11 +30,12 @@ export class HubMainComponent implements OnInit{
     ) { }
 
 
-    onSubmit(form: any){        
+    onSubmit(form: any){       
         const message: HubMessage = new HubMessage(
-            form.content, 
+            form.content,
             this._authService.user.username, 
             this._hubService.hub.title);
+        console.log(message);
         this._hubService.addHubMessage(message)
             .subscribe(
                 data => {
@@ -58,7 +61,10 @@ export class HubMainComponent implements OnInit{
                 //     },
                 //     error => this._errorService.handleError(error)
                 // );
-        }); 
+        });
+        this.form = this._fbld.group({
+            content: ['', [<any>Validators.required]],
+        });
     }
     isLoggedIn(){
         // return this._authService.isLoggedIn();

@@ -1,8 +1,10 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {Hub} from './hub';
+import {HubMessage} from './hubmessage';
 import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {Router} from '@angular/router';
+
 
 @Injectable()
 export class HubService {
@@ -28,6 +30,20 @@ export class HubService {
         })
         .catch(function (error) { return Observable.throw(error.json()); });
     };
+    addHubMessage(hubMessage) {
+        var body = JSON.stringify(hubMessage);
+        var headers = new Headers({ 'Content-Type': 'application/json' });
+        var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+        return this._http.post('http://localhost:3000/hub/message' + token, body, { headers: headers })
+            .map(function (response) {
+            var data = response.json().obj;
+            console.log(data);
+            // var hub = new HubMessage(data.content,data.);
+            return data;
+        })
+        .catch(function (error) { return Observable.throw(error.json()); });
+    }
+
     updateHub (hub) {
         var body = JSON.stringify(hub);
         var headers = new Headers({ 'Content-Type': 'application/json' });
@@ -51,15 +67,15 @@ export class HubService {
         .catch(function (error) { return Observable.throw(error.json()); });
     };
     getHubMessages(hubTitle) {
-        const body = JSON.stringify(hubTitle);
-        const headers = new Headers({'Content-Type': 'application/json'});
-        var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+        // const body = JSON.stringify(hubTitle);
+        // const headers = new Headers({'Content-Type': 'application/json'});
+        // var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
 
-        return this._http.post('http://localhost:3000/hubMessages'+ token, body, {headers: headers})
-            .map(response => 
-                response.json()
-            )
-            .catch(error => Observable.throw(error.json()));
+        // return this._http.post('http://localhost:3000/hubMessages'+ token, body, {headers: headers})
+        //     .map(response => 
+        //         response.json()
+        //     )
+        //     .catch(error => Observable.throw(error.json()));
     }
     editHub(hubToUpdate) {
         this._router.navigate(['/hub/update']);
