@@ -38,7 +38,6 @@ export class HubService {
             .map(function (response) {
             var data = response.json().obj;
             console.log(data);
-            // var hub = new HubMessage(data.content,data.);
             return data;
         })
         .catch(function (error) { return Observable.throw(error.json()); });
@@ -67,15 +66,18 @@ export class HubService {
         .catch(function (error) { return Observable.throw(error.json()); });
     };
     getHubMessages(hubTitle) {
-        // const body = JSON.stringify(hubTitle);
-        // const headers = new Headers({'Content-Type': 'application/json'});
-        // var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-
-        // return this._http.post('http://localhost:3000/hubMessages'+ token, body, {headers: headers})
-        //     .map(response => 
-        //         response.json()
-        //     )
-        //     .catch(error => Observable.throw(error.json()));
+        return this._http.get('http://localhost:3000/hub/' + hubTitle.title)
+            .map(function (response) {
+            var data = response.json().obj;
+            var objs = [];
+          
+             for (var i = 0; i < data.length; i++) {
+                var message = new HubMessage(data[i].content, data[i].user.username, data[i].creationDate);
+                objs.push(message);
+            }
+            return objs;
+        })
+        .catch(function (error) { return Observable.throw(error.json()); });
     }
     editHub(hubToUpdate) {
         this._router.navigate(['/hub/update']);

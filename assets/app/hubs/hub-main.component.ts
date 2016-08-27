@@ -36,13 +36,13 @@ export class HubMainComponent implements OnInit{
             this._authService.user.username, 
             this._hubService.hub.title);
         console.log(message);
-        this._hubService.addHubMessage(message)
-            .subscribe(
-                data => {
-                    data
-                },
-                error => this._errorService.handleError(error)
-            );
+        // this._hubService.addHubMessage(message)
+        //     .subscribe(
+        //         data => {
+        //             console.log(data)
+        //         },
+        //         error => this._errorService.handleError(error)
+        //     );
     }
 
     ngOnInit(){
@@ -53,14 +53,13 @@ export class HubMainComponent implements OnInit{
                 var obj = {
                     title: title
                 }
-            
-                // this._hubService.getHubMessages(obj)
-                // .subscribe(
-                //     data => {
-                //         this.hubMessages = data;
-                //     },
-                //     error => this._errorService.handleError(error)
-                // );
+                this._hubService.getHubMessages(obj)
+                .subscribe(
+                    data => {
+                        this.hubMessages = data;
+                    },
+                    error => this._errorService.handleError(error)
+                );
         });
         this.form = this._fbld.group({
             content: ['', [<any>Validators.required]],

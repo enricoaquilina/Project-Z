@@ -16,11 +16,30 @@ router.get('/', function(req, res, next){
                     error: err
                 })
             }
+            console.log(docs);
             res.status(200).json({
                 message: 'success',
                 obj: docs
             });
         })
+})
+router.get('/:id', function(req, res, next){
+    Hub.findOne({title: req.body.id}, function(err, doc){
+        HubMessage.find({parentHub: doc})
+            .populate('user', 'username email')
+            .exec(function(err, docs){
+                if(err) {
+                    return res.status(404).json({
+                        title: 'An error occurred',
+                        error: err
+                    });
+                }
+                res.status(200).json({
+                    message: 'success',
+                    obj: docs
+                });
+            });
+    })
 })
 router.use('/', function(req, res, next){
     token.verify(req.query.token, 'd8f6b7a3-d98d-4f0a-88a2-ff90e26a6e70', function(err, decoded){
@@ -64,10 +83,6 @@ router.use('/', function(req, res, next){
 //     })
 // })
 router.post('/message', function(req, res, next){
-    console.log(req.body);
-    console.log(req.query);
-    var decoded = token.decode(req.query.token);
-    console.log('here');
     User.findOne({username: req.body.writer}, function(err, user){
         if(err){
             return res.status(404).json({
