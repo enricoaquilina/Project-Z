@@ -2,5 +2,6 @@ export class HubMessage{
     constructor (
         public content: string, 
         public writer: string, 
-        public creationDate?: string) {};
+        public parentHub: string,
+        public creationDate?: Date) {};
 }

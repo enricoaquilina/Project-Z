@@ -34,15 +34,13 @@ export class HubService {
         var body = JSON.stringify(hubMessage);
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-        return this._http.post('http://localhost:3000/hub/message' + token, body, { headers: headers })
+        return this._http.post('http://localhost:3000/message'+token, body, { headers: headers })
             .map(function (response) {
             var data = response.json().obj;
-            console.log(data);
             return data;
         })
         .catch(function (error) { return Observable.throw(error.json()); });
     }
-
     updateHub (hub) {
         var body = JSON.stringify(hub);
         var headers = new Headers({ 'Content-Type': 'application/json' });
@@ -66,7 +64,7 @@ export class HubService {
         .catch(function (error) { return Observable.throw(error.json()); });
     };
     getHubMessages(hubTitle) {
-        return this._http.get('http://localhost:3000/hub/' + hubTitle.title)
+        return this._http.get('http://localhost:3000/message/' + hubTitle.title)
             .map(function (response) {
             var data = response.json().obj;
             var objs = [];
