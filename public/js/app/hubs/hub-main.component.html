@@ -5,9 +5,10 @@
     <div class="panel-body">
         <!--{{hub.description}}-->
         <hub-message *ngFor="let message of hubMessages" [message]="message"></hub-message>
-        <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
-            <input type="text" ngControl="content" id="content" class="form-control" [formControl]="form.controls['content']" name="content" #input required/>
-            <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Send</button> 
+        <form (ngSubmit)="onSubmit(messageForm)" #messageForm="ngForm">
+            <!--[formGroup]="form" (ngSubmit)="onSubmit(form.value)"-->
+            <input type="text" id="content" class="form-control" ngModel name="content" #message="ngModel" required/>
+            <button type="submit" class="btn btn-primary">Send</button>  
         </form>
     </div>
     <footer class="panel-footer clearfix">

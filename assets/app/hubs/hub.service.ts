@@ -14,7 +14,7 @@ export class HubService {
     ){}
     hubs: Hub[] = [];
     isEdit = new EventEmitter<Hub>();
-    hubViewEvt = new EventEmitter<Hub>();
+    newMessage = new EventEmitter<HubMessage>();
 
     hub: Hub = null;
     
@@ -70,7 +70,9 @@ export class HubService {
             var objs = [];
           
              for (var i = 0; i < data.length; i++) {
-                var message = new HubMessage(data[i].content, data[i].user.username, data[i].creationDate);
+                var date = new Date(data[i].creationDate);
+                var dateFormatted = date.getDate()+'/'+date.getMonth()+'/'+date.getFullYear();
+                var message = new HubMessage(data[i].content, data[i].user.username, data[i].parentHub, dateFormatted);
                 objs.push(message);
             }
             return objs;

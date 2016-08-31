@@ -3,5 +3,5 @@ export class HubMessage{
         public content: string, 
         public writer: string, 
         public parentHub: string,
-        public creationDate?: Date) {};
+        public creationDate?: string) {};
 }
