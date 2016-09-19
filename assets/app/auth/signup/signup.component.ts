@@ -1,6 +1,5 @@
 import {User} from '../user';
 import {Router} from '@angular/router';
-import {Control} from '@angular/common';
 import {AuthService} from '../auth.service';
 import {AppValidators} from '../../validators';
 import {Component, OnInit} from '@angular/core';

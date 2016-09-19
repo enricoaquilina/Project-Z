@@ -1,11 +1,11 @@
 {
   "_args": [
     [
-      "es6-shim",
+      "es6-shim@^0.35.1",
       "/home/profmouse/MEGA/app"
     ]
   ],
-  "_from": "es6-shim@latest",
+  "_from": "es6-shim@>=0.35.1 <0.36.0",
   "_id": "es6-shim@0.35.1",
   "_inCache": true,
   "_installable": true,
@@ -23,11 +23,11 @@
   "_phantomChildren": {},
   "_requested": {
     "name": "es6-shim",
-    "raw": "es6-shim",
-    "rawSpec": "",
+    "raw": "es6-shim@^0.35.1",
+    "rawSpec": "^0.35.1",
     "scope": null,
-    "spec": "latest",
-    "type": "tag"
+    "spec": ">=0.35.1 <0.36.0",
+    "type": "range"
   },
   "_requiredBy": [
     "/"
@@ -35,7 +35,7 @@
   "_resolved": "https://registry.npmjs.org/es6-shim/-/es6-shim-0.35.1.tgz",
   "_shasum": "a23524009005b031ab4a352ac196dfdfd1144ab7",
   "_shrinkwrap": null,
-  "_spec": "es6-shim",
+  "_spec": "es6-shim@^0.35.1",
   "_where": "/home/profmouse/MEGA/app",
   "author": {
     "name": "Paul Miller",

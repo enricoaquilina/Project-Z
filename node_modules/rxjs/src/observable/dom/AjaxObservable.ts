@@ -1,16 +1,17 @@
-import {root} from '../../util/root';
-import {tryCatch} from '../../util/tryCatch';
-import {errorObject} from '../../util/errorObject';
-import {Observable} from '../../Observable';
-import {Subscriber} from '../../Subscriber';
-import {TeardownLogic} from '../../Subscription';
+import { root } from '../../util/root';
+import { tryCatch } from '../../util/tryCatch';
+import { errorObject } from '../../util/errorObject';
+import { Observable } from '../../Observable';
+import { Subscriber } from '../../Subscriber';
+import { TeardownLogic } from '../../Subscription';
+import { MapOperator } from '../../operator/map';
 
 export interface AjaxRequest {
   url?: string;
   body?: any;
   user?: string;
   async?: boolean;
-  method: string;
+  method?: string;
   headers?: Object;
   timeout?: number;
   password?: string;
@@ -19,7 +20,6 @@ export interface AjaxRequest {
   withCredentials?: boolean;
   createXHR?: () => XMLHttpRequest;
   progressSubscriber?: Subscriber<any>;
-  resultSelector?: <T>(response: AjaxResponse) => T;
   responseType?: string;
 }
 
@@ -62,37 +62,33 @@ function getXMLHttpRequest(): XMLHttpRequest {
 }
 
 export interface AjaxCreationMethod {
-  <T>(urlOrRequest: string | AjaxRequest): Observable<T>;
-  get<T>(url: string, resultSelector?: (response: AjaxResponse) => T, headers?: Object): Observable<T>;
-  post<T>(url: string, body?: any, headers?: Object): Observable<T>;
-  put<T>(url: string, body?: any, headers?: Object): Observable<T>;
-  delete<T>(url: string, headers?: Object): Observable<T>;
-  getJSON<T, R>(url: string, resultSelector?: (data: T) => R, headers?: Object): Observable<R>;
+  (urlOrRequest: string | AjaxRequest): Observable<AjaxResponse>;
+  get(url: string, headers?: Object): Observable<AjaxResponse>;
+  post(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
+  put(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
+  delete(url: string, headers?: Object): Observable<AjaxResponse>;
+  getJSON<T, R>(url: string, headers?: Object): Observable<R>;
 }
 
-function defaultGetResultSelector<T>(response: AjaxResponse): T {
-  return response.response;
-}
-
-export function ajaxGet<T>(url: string, resultSelector: (response: AjaxResponse) => T = defaultGetResultSelector, headers: Object = null) {
-  return new AjaxObservable<T>({ method: 'GET', url, resultSelector, headers });
+export function ajaxGet(url: string, headers: Object = null) {
+  return new AjaxObservable<AjaxResponse>({ method: 'GET', url, headers });
 };
 
-export function ajaxPost<T>(url: string, body?: any, headers?: Object): Observable<T> {
-  return new AjaxObservable<T>({ method: 'POST', url, body, headers });
+export function ajaxPost(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
+  return new AjaxObservable<AjaxResponse>({ method: 'POST', url, body, headers });
 };
 
-export function ajaxDelete<T>(url: string, headers?: Object): Observable<T> {
-  return new AjaxObservable<T>({ method: 'DELETE', url, headers });
+export function ajaxDelete(url: string, headers?: Object): Observable<AjaxResponse> {
+  return new AjaxObservable<AjaxResponse>({ method: 'DELETE', url, headers });
 };
 
-export function ajaxPut<T>(url: string, body?: any, headers?: Object): Observable<T> {
-  return new AjaxObservable<T>({ method: 'PUT', url, body, headers });
+export function ajaxPut(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
+  return new AjaxObservable<AjaxResponse>({ method: 'PUT', url, body, headers });
 };
 
-export function ajaxGetJSON<T, R>(url: string, resultSelector?: (data: T) => R, headers?: Object): Observable<R> {
-  const finalResultSelector = resultSelector ? (res: AjaxResponse) => resultSelector(res.response) : (res: AjaxResponse) => res.response;
-  return new AjaxObservable<R>({ method: 'GET', url, responseType: 'json', resultSelector: finalResultSelector, headers });
+export function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
+  return new AjaxObservable<AjaxResponse>({ method: 'GET', url, responseType: 'json', headers })
+    .lift<T>(new MapOperator<AjaxResponse, T>((x: AjaxResponse, index: number): T => x.response, null));
 };
 
 /**
@@ -184,7 +180,6 @@ export class AjaxObservable<T> extends Observable<T> {
  */
 export class AjaxSubscriber<T> extends Subscriber<Event> {
   private xhr: XMLHttpRequest;
-  private resultSelector: (response: AjaxResponse) => T;
   private done: boolean = false;
 
   constructor(destination: Subscriber<T>, public request: AjaxRequest) {
@@ -198,32 +193,22 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     }
 
     // ensure content type is set
-    if (!('Content-Type' in headers) && !(root.FormData && request.body instanceof root.FormData)) {
+    if (!('Content-Type' in headers) && !(root.FormData && request.body instanceof root.FormData) && typeof request.body !== 'undefined') {
       headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     }
 
     // properly serialize body
     request.body = this.serializeBody(request.body, request.headers['Content-Type']);
 
-    this.resultSelector = request.resultSelector;
     this.send();
   }
 
   next(e: Event): void {
     this.done = true;
-    const { resultSelector, xhr, request, destination } = this;
+    const { xhr, request, destination } = this;
     const response = new AjaxResponse(e, xhr, request);
 
-    if (resultSelector) {
-      const result = tryCatch(resultSelector)(response);
-      if (result === errorObject) {
-        this.error(errorObject.e);
-      } else {
-        destination.next(result);
-      }
-    } else {
-      destination.next(response);
-    }
+    destination.next(response);
   }
 
   private send(): XMLHttpRequest {
@@ -249,7 +234,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
       if (result === errorObject) {
         this.error(errorObject.e);
-        return;
+        return null;
       }
 
       // timeout and responseType can be set once the XHR is open
@@ -269,6 +254,8 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
         xhr.send();
       }
     }
+
+    return xhr;
   }
 
   private serializeBody(body: any, contentType?: string) {
@@ -409,9 +396,9 @@ export class AjaxResponse {
       case 'json':
         if ('response' in xhr) {
           //IE does not support json as responseType, parse it internally
-          this.response = xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || '');
+          this.response = xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || 'null');
         } else {
-          this.response = JSON.parse(xhr.responseText || '');
+          this.response = JSON.parse(xhr.responseText || 'null');
         }
         break;
       case 'xml':

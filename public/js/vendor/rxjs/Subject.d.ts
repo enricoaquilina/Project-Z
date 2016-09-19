@@ -15,7 +15,7 @@ export declare class SubjectSubscriber<T> extends Subscriber<T> {
  */
 export declare class Subject<T> extends Observable<T> implements ISubscription {
     observers: Observer<T>[];
-    isUnsubscribed: boolean;
+    closed: boolean;
     isStopped: boolean;
     hasError: boolean;
     thrownError: any;
@@ -34,7 +34,6 @@ export declare class Subject<T> extends Observable<T> implements ISubscription {
  */
 export declare class AnonymousSubject<T> extends Subject<T> {
     protected destination: Observer<T>;
-    protected source: Observable<T>;
     constructor(destination?: Observer<T>, source?: Observable<T>);
     next(value: T): void;
     error(err: any): void;

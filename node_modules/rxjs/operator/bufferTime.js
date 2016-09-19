@@ -4,8 +4,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Subscriber_1 = require('../Subscriber');
 var async_1 = require('../scheduler/async');
+var Subscriber_1 = require('../Subscriber');
 var isScheduler_1 = require('../util/isScheduler');
 /**
  * Buffers the source Observable values for a specific time period.
@@ -177,7 +177,7 @@ function dispatchBufferTimeSpanOnly(state) {
     if (prevContext) {
         subscriber.closeContext(prevContext);
     }
-    if (!subscriber.isUnsubscribed) {
+    if (!subscriber.closed) {
         state.context = subscriber.openContext();
         state.context.closeAction = this.schedule(state, state.bufferTimeSpan);
     }
@@ -186,7 +186,7 @@ function dispatchBufferCreation(state) {
     var bufferCreationInterval = state.bufferCreationInterval, bufferTimeSpan = state.bufferTimeSpan, subscriber = state.subscriber, scheduler = state.scheduler;
     var context = subscriber.openContext();
     var action = this;
-    if (!subscriber.isUnsubscribed) {
+    if (!subscriber.closed) {
         subscriber.add(context.closeAction = scheduler.schedule(dispatchBufferClose, bufferTimeSpan, { subscriber: subscriber, context: context }));
         action.schedule(state, bufferCreationInterval);
     }

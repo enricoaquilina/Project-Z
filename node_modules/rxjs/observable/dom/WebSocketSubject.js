@@ -94,17 +94,24 @@ var WebSocketSubject = (function (_super) {
     WebSocketSubject.prototype._connectSocket = function () {
         var _this = this;
         var WebSocketCtor = this.WebSocketCtor;
-        var socket = this.protocol ?
-            new WebSocketCtor(this.url, this.protocol) :
-            new WebSocketCtor(this.url);
-        this.socket = socket;
+        var observer = this._output;
+        var socket = null;
+        try {
+            socket = this.protocol ?
+                new WebSocketCtor(this.url, this.protocol) :
+                new WebSocketCtor(this.url);
+            this.socket = socket;
+        }
+        catch (e) {
+            observer.error(e);
+            return;
+        }
         var subscription = new Subscription_1.Subscription(function () {
             _this.socket = null;
             if (socket && socket.readyState === 1) {
                 socket.close();
             }
         });
-        var observer = this._output;
         socket.onopen = function (e) {
             var openObserver = _this.openObserver;
             if (openObserver) {
@@ -174,7 +181,7 @@ var WebSocketSubject = (function (_super) {
         subscription.add(this._output.subscribe(subscriber));
         subscription.add(function () {
             var socket = _this.socket;
-            if (socket && socket.readyState === 1) {
+            if (_this._output.observers.length === 0 && socket && socket.readyState === 1) {
                 socket.close();
                 _this.socket = null;
             }

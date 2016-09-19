@@ -9,6 +9,7 @@ var tryCatch_1 = require('../../util/tryCatch');
 var errorObject_1 = require('../../util/errorObject');
 var Observable_1 = require('../../Observable');
 var Subscriber_1 = require('../../Subscriber');
+var map_1 = require('../../operator/map');
 function getCORSRequest() {
     if (root_1.root.XMLHttpRequest) {
         var xhr = new root_1.root.XMLHttpRequest();
@@ -49,13 +50,9 @@ function getXMLHttpRequest() {
         }
     }
 }
-function defaultGetResultSelector(response) {
-    return response.response;
-}
-function ajaxGet(url, resultSelector, headers) {
-    if (resultSelector === void 0) { resultSelector = defaultGetResultSelector; }
+function ajaxGet(url, headers) {
     if (headers === void 0) { headers = null; }
-    return new AjaxObservable({ method: 'GET', url: url, resultSelector: resultSelector, headers: headers });
+    return new AjaxObservable({ method: 'GET', url: url, headers: headers });
 }
 exports.ajaxGet = ajaxGet;
 ;
@@ -74,9 +71,9 @@ function ajaxPut(url, body, headers) {
 }
 exports.ajaxPut = ajaxPut;
 ;
-function ajaxGetJSON(url, resultSelector, headers) {
-    var finalResultSelector = resultSelector ? function (res) { return resultSelector(res.response); } : function (res) { return res.response; };
-    return new AjaxObservable({ method: 'GET', url: url, responseType: 'json', resultSelector: finalResultSelector, headers: headers });
+function ajaxGetJSON(url, headers) {
+    return new AjaxObservable({ method: 'GET', url: url, responseType: 'json', headers: headers })
+        .lift(new map_1.MapOperator(function (x, index) { return x.response; }, null));
 }
 exports.ajaxGetJSON = ajaxGetJSON;
 ;
@@ -173,30 +170,18 @@ var AjaxSubscriber = (function (_super) {
             headers['X-Requested-With'] = 'XMLHttpRequest';
         }
         // ensure content type is set
-        if (!('Content-Type' in headers) && !(root_1.root.FormData && request.body instanceof root_1.root.FormData)) {
+        if (!('Content-Type' in headers) && !(root_1.root.FormData && request.body instanceof root_1.root.FormData) && typeof request.body !== 'undefined') {
             headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
         }
         // properly serialize body
         request.body = this.serializeBody(request.body, request.headers['Content-Type']);
-        this.resultSelector = request.resultSelector;
         this.send();
     }
     AjaxSubscriber.prototype.next = function (e) {
         this.done = true;
-        var _a = this, resultSelector = _a.resultSelector, xhr = _a.xhr, request = _a.request, destination = _a.destination;
+        var _a = this, xhr = _a.xhr, request = _a.request, destination = _a.destination;
         var response = new AjaxResponse(e, xhr, request);
-        if (resultSelector) {
-            var result = tryCatch_1.tryCatch(resultSelector)(response);
-            if (result === errorObject_1.errorObject) {
-                this.error(errorObject_1.errorObject.e);
-            }
-            else {
-                destination.next(result);
-            }
-        }
-        else {
-            destination.next(response);
-        }
+        destination.next(response);
     };
     AjaxSubscriber.prototype.send = function () {
         var _a = this, request = _a.request, _b = _a.request, user = _b.user, method = _b.method, url = _b.url, async = _b.async, password = _b.password, headers = _b.headers, body = _b.body;
@@ -217,7 +202,7 @@ var AjaxSubscriber = (function (_super) {
             }
             if (result === errorObject_1.errorObject) {
                 this.error(errorObject_1.errorObject.e);
-                return;
+                return null;
             }
             // timeout and responseType can be set once the XHR is open
             xhr.timeout = request.timeout;
@@ -234,6 +219,7 @@ var AjaxSubscriber = (function (_super) {
                 xhr.send();
             }
         }
+        return xhr;
     };
     AjaxSubscriber.prototype.serializeBody = function (body, contentType) {
         if (!body || typeof body === 'string') {
@@ -354,10 +340,10 @@ var AjaxResponse = (function () {
             case 'json':
                 if ('response' in xhr) {
                     //IE does not support json as responseType, parse it internally
-                    this.response = xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || '');
+                    this.response = xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || 'null');
                 }
                 else {
-                    this.response = JSON.parse(xhr.responseText || '');
+                    this.response = JSON.parse(xhr.responseText || 'null');
                 }
                 break;
             case 'xml':

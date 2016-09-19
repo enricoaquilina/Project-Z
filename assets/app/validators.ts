@@ -1,14 +1,14 @@
-import {Control} from '@angular/common';
+import {AbstractControl} from '@angular/forms';
 
 export class AppValidators {
     static points = 0;
 
-    static isEmail(control: Control): {[s: string]: boolean} {
+    static isEmail(control: AbstractControl): {[s: string]: boolean} {
         if (!control.value.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)){
             return {invalidMail: true};
         }
     }
-    static isSecure(control: Control): {[s: string]: boolean} {    
+    static isSecure(control: AbstractControl): {[s: string]: boolean} {    
         var p = 0;
         for (var char of control.value) {
             if(char == char.toUpperCase()){

@@ -25,11 +25,11 @@ export class AppComponent implements OnInit {
         this._authService.hasSignedIn.subscribe(user => {
             this.user = user;
         })
-        if(!this.user){
+        if(this.user){
             this._authService.getUserDetails()
                 .subscribe(
                     data => {
-                        this.user = data.obj
+                        this.user = data.obj;
                         this._authService.user = this.user;
                     },
                     error => this._errorService.handleError(error)

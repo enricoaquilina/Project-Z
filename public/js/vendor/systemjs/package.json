@@ -1,41 +1,41 @@
 {
   "_args": [
     [
-      "systemjs",
+      "systemjs@^0.19.31",
       "/home/profmouse/MEGA/app"
     ]
   ],
-  "_from": "systemjs@latest",
-  "_id": "systemjs@0.19.31",
+  "_from": "systemjs@>=0.19.31 <0.20.0",
+  "_id": "systemjs@0.19.38",
   "_inCache": true,
   "_installable": true,
   "_location": "/systemjs",
-  "_nodeVersion": "6.2.0",
+  "_nodeVersion": "6.3.1",
   "_npmOperationalInternal": {
-    "host": "packages-16-east.internal.npmjs.com",
-    "tmp": "tmp/systemjs-0.19.31.tgz_1465688640040_0.31686317874118686"
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/systemjs-0.19.38.tgz_1473177952122_0.14318925747647882"
   },
   "_npmUser": {
     "email": "guybedford@gmail.com",
     "name": "guybedford"
   },
-  "_npmVersion": "3.8.9",
+  "_npmVersion": "3.10.3",
   "_phantomChildren": {},
   "_requested": {
     "name": "systemjs",
-    "raw": "systemjs",
-    "rawSpec": "",
+    "raw": "systemjs@^0.19.31",
+    "rawSpec": "^0.19.31",
     "scope": null,
-    "spec": "latest",
-    "type": "tag"
+    "spec": ">=0.19.31 <0.20.0",
+    "type": "range"
   },
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/systemjs/-/systemjs-0.19.31.tgz",
-  "_shasum": "8bfbeb257323c46c0398fa5ccbfeb8dcb70c7353",
+  "_resolved": "https://registry.npmjs.org/systemjs/-/systemjs-0.19.38.tgz",
+  "_shasum": "e52e24d502d2b9f0b56d77c57ede67d0916bc4c5",
   "_shrinkwrap": null,
-  "_spec": "systemjs",
+  "_spec": "systemjs@^0.19.31",
   "_where": "/home/profmouse/MEGA/app",
   "author": {
     "name": "Guy Bedford"
@@ -56,14 +56,14 @@
   },
   "directories": {},
   "dist": {
-    "shasum": "8bfbeb257323c46c0398fa5ccbfeb8dcb70c7353",
-    "tarball": "https://registry.npmjs.org/systemjs/-/systemjs-0.19.31.tgz"
+    "shasum": "e52e24d502d2b9f0b56d77c57ede67d0916bc4c5",
+    "tarball": "https://registry.npmjs.org/systemjs/-/systemjs-0.19.38.tgz"
   },
   "files": [
     "index.js",
     "dist"
   ],
-  "gitHead": "f94507b22bc5aff669e9d404d43a6bd6e60fcf42",
+  "gitHead": "8ff255f20daf6f149d59cfc226eee007e59dfa3d",
   "homepage": "https://github.com/systemjs/systemjs#readme",
   "license": "MIT",
   "maintainers": [
@@ -88,5 +88,5 @@
     "test:traceur": "qunit -c s:./index.js -t ./test/test-traceur.js",
     "test:typescript": "qunit -c s:./index.js -t ./test/test-typescript.js"
   },
-  "version": "0.19.31"
+  "version": "0.19.38"
 }
